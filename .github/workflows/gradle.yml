@@ -59,12 +59,6 @@ jobs:
       - name: Setup Gradle  # Use Gradle GitHub Action for caching & consistent Gradle environment
         uses: gradle/gradle-build-action@v2.9.0
 
-      - name: Set VERSION from tag  # Derive plugin version from Git tag (e.g. v0.1.0 -> 0.1.0) for publishing
-        shell: bash
-        run: |
-          echo "GIT_TAG=${GITHUB_REF##*/}" >> $GITHUB_ENV
-          echo "VERSION=${GIT_TAG#v}" >> $GITHUB_ENV
-
       - name: Generate Release Notes
         if: startsWith(github.ref, 'refs/tags/')
         run: |
@@ -77,13 +71,10 @@ jobs:
           fi
 
       - name: Publish to Gradle Plugin Portal
+        run: ./gradlew publishPlugins
         env:
-          # These must be set as repository secrets (see notes below)
           GRADLE_PUBLISH_KEY: ${{ secrets.GRADLE_PUBLISH_KEY }}
           GRADLE_PUBLISH_SECRET: ${{ secrets.GRADLE_PUBLISH_SECRET }}
-        run: |
-          echo "Publishing version $VERSION (from tag $GIT_TAG)"
-          ./gradlew publishPlugins -Pversion="$VERSION"
 
       - name: Create GitHub Release
         if: startsWith(github.ref, 'refs/tags/')
