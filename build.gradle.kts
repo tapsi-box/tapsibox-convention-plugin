@@ -3,6 +3,7 @@ plugins {
     `java-gradle-plugin`
     `maven-publish`
     id("com.gradle.plugin-publish") version "1.2.1"
+    id("com.diffplug.spotless") version "6.23.3"
 }
 
 group = "box.tapsi.build"
@@ -31,5 +32,22 @@ gradlePlugin {
             tags = listOf("kotlin", "convention", "spotless", "detekt", "kover")
             implementationClass = "box.tapsi.build.TapsiBoxConventionPlugin"
         }
+    }
+}
+
+spotless {
+    kotlin {
+        target("src/**/*.kt")
+        ktlint("1.1.0")
+            .editorConfigOverride(
+                mapOf(
+                    "indent_size" to 2,
+                    "ktlint_standard_filename" to "disabled",
+                    "ktlint_standard_max-line-length" to "120"
+                )
+            )
+        trimTrailingWhitespace()
+        indentWithSpaces()
+        endWithNewline()
     }
 }

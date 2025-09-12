@@ -11,10 +11,10 @@ import javax.inject.Inject
  * @author Shahryar Safizadeh
  */
 open class TapsiBoxConventionExtension @Inject constructor(objects: ObjectFactory) {
-    val koverExcludes: ListProperty<String> = objects.listProperty(String::class.java).convention(
-        listOf(
-            "com.google.*",
-            "grpc.gateway.protoc_gen_openapiv2.options.*"
-        )
-    )
+  val koverExcludes: ListProperty<String> = objects.listProperty(String::class.java).convention(
+    listOf(
+      "com.google.*",
+      "grpc.gateway.protoc_gen_openapiv2.options.*",
+    ),
+  )
 }
