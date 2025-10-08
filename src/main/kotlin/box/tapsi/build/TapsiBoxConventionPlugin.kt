@@ -77,7 +77,7 @@ class TapsiBoxConventionPlugin : Plugin<Project> {
             isEnabled = true
             name = "Verifying code coverage"
             bound {
-              minValue = 71
+              minValue = extension.minCoveragePercentage.get()
               counter = CounterType.INSTRUCTION
               valueType = VerificationValueType.COVERED_PERCENTAGE
             }
