@@ -23,9 +23,19 @@ class TapsiBoxConventionPlugin : Plugin<Project> {
 
     val extension = project.extensions.create<TapsiBoxConventionExtension>("tapsiBoxConvention")
 
-    configureSpotless(project)
-    configureDetekt(project)
-    configureKover(project, extension)
+    project.plugins.withId("com.diffplug.spotless") {
+      configureSpotless(project)
+    }
+
+    project.plugins.withId("io.gitlab.arturbosch.detekt") {
+      configureDetekt(project)
+    }
+
+    project.plugins.withId("org.jetbrains.kotlinx.kover") {
+      project.afterEvaluate {
+        configureKover(project, extension)
+      }
+    }
   }
 
   private fun applyPlugins(project: Project) {
@@ -77,7 +87,7 @@ class TapsiBoxConventionPlugin : Plugin<Project> {
             isEnabled = true
             name = "Verifying code coverage"
             bound {
-              minValue = extension.minCoveragePercentage.get()
+              minValue = extension.koverMinCoveragePercentage.get()
               counter = CounterType.INSTRUCTION
               valueType = VerificationValueType.COVERED_PERCENTAGE
             }

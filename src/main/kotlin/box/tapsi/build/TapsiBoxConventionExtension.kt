@@ -18,5 +18,5 @@ open class TapsiBoxConventionExtension @Inject constructor(objects: ObjectFactor
     ),
   )
 
-  val minCoveragePercentage: Property<Int> = objects.property(Int::class.java).convention(70)
+  val koverMinCoveragePercentage: Property<Int> = objects.property(Int::class.java).convention(70)
 }

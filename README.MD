@@ -2,6 +2,10 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Kotlin](https://img.shields.io/badge/kotlin-1.9.22-blue.svg)](https://kotlinlang.org)
+[![Gradle](https://img.shields.io/badge/Gradle-8.0+-green.svg)](https://gradle.org)
+[![Detekt](https://img.shields.io/badge/Detekt-1.23.6-blue.svg)](https://detekt.github.io/detekt/)
+[![Spotless](https://img.shields.io/badge/Spotless-6.23.3-orange.svg)](https://github.com/diffplug/spotless)
+[![Kover](https://img.shields.io/badge/Kover-0.6.0-purple.svg)](https://kotlin.github.io/kotlinx-kover/)
 
 A binary Gradle convention plugin to standardize build logic for Tapsi Box Kotlin projects using Spotless, Detekt, and Kover.
 
@@ -43,10 +47,10 @@ pluginManagement {
 
 ```kotlin
 plugins {
-    id("box.tapsi.kotlin-conventions") version "0.0.1"
+    id("box.tapsi.kotlin-conventions") version "0.0.4"
 }
 ```
-Replace 0.0.1 with the published release version you want to use.
+Replace the version with the published release version you want to use.
 
 
 ## Quick Start
@@ -60,6 +64,7 @@ Add `id("box.tapsi.kotlin-conventions")` to your project plugins block.
 ```kotlin
 tapsiBoxConvention {
     koverExcludes.add("box.tapsi.generated.*")
+    koverMinCoveragePercentage.set(5)
 }
 ```
 ### 3. Run Shared Tasks
@@ -74,7 +79,7 @@ All tasks and checks will be applied according to the standardized Tapsi Box con
 
 ## Configuration
 
-### Kover Excludes
+### Kover
 
 Customize which packages are excluded from code coverage:
 
@@ -84,20 +89,29 @@ tapsiBoxConvention {
 }
 ```
 
-### Spotless & Detekt
+You can also set the minimum acceptable code coverage percentage using `koverMinCoveragePercentage`:
 
-The plugin automatically configures Spotless and Detekt based on Tapsi Box rules. If needed, you can override by creating a `config/detekt/detekt.yml` in your project.
+```kotlin
+tapsiBoxConvention {
+    koverMinCoveragePercentage.set(80)
+}
+```
+This ensures that the project fails the build if code coverage falls below 80%.
+
+### Detekt
+
+The plugin automatically uses the project's `config/detekt/detekt.yml` file if it exists, applying the rules defined there to perform static analysis. You can override the configuration file or specific rules in your project as needed.
 
 ## Version Compatibility
 
 | Plugin Version | Kotlin | Gradle | Java |
-| -------------- | ------ | ------ |------|
-| 0.0.1          | 1.9.22 | 8+     | 17+  |
+|----------------|--------| ------ |------|
+| 0.0.4          | 1.9.23 | 8+     | 17+  |
 
 ## Dependencies
 
 * **Spotless 6.23.3** – Kotlin formatting
-* **Detekt 1.23.5** – Static analysis
+* **Detekt 1.23.6** – Static analysis
 * **Kover 0.6.0** – Coverage verification
 
 ## License

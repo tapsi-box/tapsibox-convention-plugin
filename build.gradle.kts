@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "box.tapsi.build"
-version = "0.0.3"
+version = "0.0.4"
 
 repositories {
     mavenCentral()
@@ -51,3 +51,32 @@ spotless {
         endWithNewline()
     }
 }
+
+tasks.register("verifyReadmePluginVersion") {
+  doLast {
+    val readmeFile = file("README.MD")
+    if (!readmeFile.exists()) throw GradleException("README.MD not found")
+
+    // Look for the plugin block under "Apply plugin in build.gradle.kts"
+    val pluginBlockRegex = """id\("box\.tapsi\.kotlin-conventions"\)\s+version\s+"([\d.]+)"""".toRegex()
+    val match = pluginBlockRegex.find(readmeFile.readText())
+      ?: throw GradleException("Could not find plugin version in README.MD")
+
+    val readmeVersion = match.groupValues[1]
+    val projectVersion = project.version.toString()
+
+    if (readmeVersion != projectVersion) {
+      throw GradleException(
+        "README.MD plugin version ($readmeVersion) does not match project.version ($projectVersion)"
+      )
+    }
+
+    println("README.MD plugin version matches project.version: $projectVersion")
+  }
+}
+
+tasks.check {
+  dependsOn("verifyReadmePluginVersion")
+}
+
+data class Check(val name: String, val expectedValue: String)
