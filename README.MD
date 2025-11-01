@@ -47,7 +47,7 @@ pluginManagement {
 
 ```kotlin
 plugins {
-    id("box.tapsi.kotlin-conventions") version "0.0.4"
+    id("box.tapsi.kotlin-conventions") version "0.0.5-RC1"
 }
 ```
 Replace the version with the published release version you want to use.
