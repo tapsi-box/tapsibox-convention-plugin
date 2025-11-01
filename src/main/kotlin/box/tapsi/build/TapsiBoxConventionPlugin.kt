@@ -2,9 +2,9 @@ package box.tapsi.build
 
 import com.diffplug.gradle.spotless.SpotlessExtension
 import io.gitlab.arturbosch.detekt.extensions.DetektExtension
-import kotlinx.kover.api.CounterType
-import kotlinx.kover.api.KoverProjectConfig
-import kotlinx.kover.api.VerificationValueType
+import kotlinx.kover.gradle.plugin.dsl.AggregationType
+import kotlinx.kover.gradle.plugin.dsl.CoverageUnit
+import kotlinx.kover.gradle.plugin.dsl.KoverProjectExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.create
@@ -14,6 +14,7 @@ import org.gradle.kotlin.dsl.findByType
  * Provides standardized build conventions for Tapsi Box projects, integrating Spotless, Detekt, and Kover.
  *
  * @author Shahryar Safizadeh
+ * @author Mahdi Bohloul
  */
 @Suppress("unused")
 class TapsiBoxConventionPlugin : Plugin<Project> {
@@ -79,23 +80,28 @@ class TapsiBoxConventionPlugin : Plugin<Project> {
   }
 
   private fun configureKover(project: Project, extension: TapsiBoxConventionExtension) {
-    project.extensions.findByType<KoverProjectConfig>()?.let {
-      project.extensions.configure<KoverProjectConfig>("kover") {
-        verify {
-          onCheck.set(true)
-          rule {
-            isEnabled = true
-            name = "Verifying code coverage"
-            bound {
-              minValue = extension.koverMinCoveragePercentage.get()
-              counter = CounterType.INSTRUCTION
-              valueType = VerificationValueType.COVERED_PERCENTAGE
+    project.extensions.findByType<KoverProjectExtension>()?.let {
+      project.extensions.configure<KoverProjectExtension>("kover") {
+        reports {
+          total {
+            log {
+              onCheck.set(true)
+              format.set("<entity> line coverage: <value>%")
             }
           }
-        }
-        filters {
-          classes {
-            excludes += extension.koverExcludes.get()
+          verify {
+            rule("default") {
+              bound {
+                minValue.set(extension.koverMinCoveragePercentage.get())
+                coverageUnits.set(CoverageUnit.INSTRUCTION)
+                aggregationForGroup.set(AggregationType.COVERED_PERCENTAGE)
+              }
+            }
+          }
+          filters {
+            excludes {
+              classes(extension.koverExcludes.get())
+            }
           }
         }
       }

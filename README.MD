@@ -5,7 +5,7 @@
 [![Gradle](https://img.shields.io/badge/Gradle-8.0+-green.svg)](https://gradle.org)
 [![Detekt](https://img.shields.io/badge/Detekt-1.23.6-blue.svg)](https://detekt.github.io/detekt/)
 [![Spotless](https://img.shields.io/badge/Spotless-6.23.3-orange.svg)](https://github.com/diffplug/spotless)
-[![Kover](https://img.shields.io/badge/Kover-0.6.0-purple.svg)](https://kotlin.github.io/kotlinx-kover/)
+[![Kover](https://img.shields.io/badge/Kover-0.9.3-purple.svg)](https://kotlin.github.io/kotlinx-kover/)
 
 A binary Gradle convention plugin to standardize build logic for Tapsi Box Kotlin projects using Spotless, Detekt, and Kover.
 
@@ -47,7 +47,7 @@ pluginManagement {
 
 ```kotlin
 plugins {
-    id("box.tapsi.kotlin-conventions") version "0.0.4"
+    id("box.tapsi.kotlin-conventions") version "0.0.5-RC1"
 }
 ```
 Replace the version with the published release version you want to use.
@@ -106,7 +106,7 @@ The plugin automatically uses the project's `config/detekt/detekt.yml` file if i
 
 | Plugin Version | Kotlin | Gradle | Java |
 |----------------|--------| ------ |------|
-| 0.0.4          | 1.9.23 | 8+     | 17+  |
+| 0.0.5-RC1      | 1.9.23 | 8+     | 17+  |
 
 ## Dependencies
 
