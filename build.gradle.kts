@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "box.tapsi.build"
-version = "0.0.4"
+version = "0.0.5-RC1"
 
 repositories {
     mavenCentral()
@@ -17,7 +17,7 @@ repositories {
 dependencies {
     implementation("com.diffplug.spotless:spotless-plugin-gradle:6.23.3")
     implementation("io.gitlab.arturbosch.detekt:io.gitlab.arturbosch.detekt.gradle.plugin:1.23.6")
-    implementation("org.jetbrains.kotlinx.kover:org.jetbrains.kotlinx.kover.gradle.plugin:0.6.0")
+    implementation("org.jetbrains.kotlinx.kover:org.jetbrains.kotlinx.kover.gradle.plugin:0.9.3")
 }
 
 gradlePlugin {
@@ -58,7 +58,7 @@ tasks.register("verifyReadmePluginVersion") {
     if (!readmeFile.exists()) throw GradleException("README.MD not found")
 
     // Look for the plugin block under "Apply plugin in build.gradle.kts"
-    val pluginBlockRegex = """id\("box\.tapsi\.kotlin-conventions"\)\s+version\s+"([\d.]+)"""".toRegex()
+    val pluginBlockRegex = """id\("box\.tapsi\.kotlin-conventions"\)\s+version\s+"([0-9A-Za-z.\-]+)"""".toRegex()
     val match = pluginBlockRegex.find(readmeFile.readText())
       ?: throw GradleException("Could not find plugin version in README.MD")
 
